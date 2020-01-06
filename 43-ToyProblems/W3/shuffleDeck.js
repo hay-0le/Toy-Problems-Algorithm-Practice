@@ -1,112 +1,53 @@
-/*
- * Bubble sort is the most basic sorting algorithm in all of Computer
- * Sciencedom. It works by starting at the first element of an array and
- * comparing it to the second element; if the first element is greater than the
- * second element, it swaps the two. It then compares the second to the third,
- * and the third to the fourth, and so on; in this way, the largest values
- * "bubble" to the end of the array. Once it gets to the end of the array, it
- * starts over and repeats the process until the array is sorted numerically.
+/**
+ * Given an array containing a deck of cards, implement a function that shuffles
+ * the deck.
  *
- * Implement a function that takes an array and sorts it using this technique.
- * Don't use JavaScript's built-in sorting function (Array.prototype.sort).
+ * Example:
+ *  var deck = orderedDeck();
+ *  // ["A♥","2♥","3♥",...,"J♦","Q♦","K♦"]
+ *  shuffleDeck(deck);
+ *  // ["2♠","J♣","A♦", ... ,"7♣","8♣","K♠"]
  *
- * QUERY: What's the time complexity of your algorithm? If you don't already
- * know, try to intuit this without consulting the Googles.
+ * Note:
+ *   A shuffled deck should be completely random. That means that a given card should
+ *   be as likely as any other to appear in a given deck index, completely independent
+ *   of the order of the input deck. Think carefully about how to be sure your algorithm
+ *   generates a properly shuffled deck-- it is easy to accidentally create a biased algorithm.
  *
- * Extra credit: Optimization time! During any given pass, if no elements are
- * swapped we can assume the list is sorted and can exit the function early.
- * After this optimization, what is the time complexity of your algorithm?
+ * Extra credit:
+ *   - Even a naive algorithm can easily run in linear time. However, does your
+ *     algorithm remain unbiased as N (the deck size) increases? How do you know?
+ *   - Once you have created a properly random, linear algorithm, what is its space complexity?
+ *     There is an algorithm that uses O(N) time and O(1) space (i.e., an in-place shuffle).
  *
- * Moar credits: Do you need to consider every element every time you iterate
- * through the array? Make it happen, boss. Again: Has the time complexity of
- * your algorithm changed?
-*/
-
-/*
- * Example usage:
- * bubbleSort([2, 1, 3]); // yields [1, 2, 3]
+ * A further note on randomness:
+ *   Technically, a computer-shuffled deck will usually be "pseudorandom",
+ *   not "truly" random. However, the difference between the two is too small to
+ *   be detectable by any known test.
+ *   See http://en.wikipedia.org/wiki/Pseudorandom_number_generator .
  *
-*/
+ *   A human shuffler is much more biased; it takes around seven normal "riffle"
+ *   shuffles before a real deck is actually randomized.
+ *   See https://www.dartmouth.edu/~chance/teaching_aids/books_articles/Mann.pdf .
+ */
 
-// Feel free to add helper functions if needed.
 
 
-var bubbleSort = (array) => {
-    var current, next, currentIdx, nextIdx;
-    var swapped = false;
+ //time complexity: O(n)
+ //space complexity: O(1)
+ 
+ var shuffleDeck = (deck) => {
 
-    for (var i = 0; i < array.length; i++) {
-        current = array[i];
-        currentIdx = i;
-        next = array[i + 1];
-        nextIdx = i + 1;
+    for (var i = 0; i < deck.length; i++) {
+        var randomIndex = i + Math.floor(Math.random() * (deck.length - i));
+        // var randomIndex = Math.floor(Math.random() * (deck.length - i));
 
-        if (current > next) {
-            array[currentIdx] = next;
-            array[nextIdx] = current;
-            swapped = true;
-        }
+        //place holder for one of the cards
+        var movedCard = deck[randomIndex];
+        //swap 'em
+        deck[randomIndex] = deck[i];
+        deck[i] = movedCard;
     }
-    
-    swapped ? bubbleSort(array) : return array;
 
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var bubbleSort = function(array) {
-//     // Your code here.
-//    var swapped = false;
-//     //loop over each index
-//     for (var i = 0; i < array.length; i++) {
-//       //define variables to hold index and the next index
-  
-//       var currentIdx = i;
-//       var nextIdx = currentIdx + 1;
-//       //while the number at that index is greater than the one after it
-//       while (array[currentIdx] > array[nextIdx] && currentIdx < array.length) {
-  
-//         var smallHolder = array[currentIdx];
-//         array[currentIdx] = array[nextIdx];
-//         array[nextIdx] = smallHolder;
-//         currentIdx++;
-//         swapped = true;
-//       }
-//       //swap/move larger to right
-//     }
-  
-//     if (swapped === true) {
-//       bubbleSort(array);
-//     }
-//     return array;
-  
-//     //return sorted array
-//   };
+    return deck;
+ }
