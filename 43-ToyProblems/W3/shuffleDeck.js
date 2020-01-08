@@ -39,7 +39,7 @@
  var shuffleDeck = (deck) => {
 
     for (var i = 0; i < deck.length; i++) {
-        var randomIndex = i + Math.floor(Math.random() * (deck.length - i));
+        var randomIndex = Math.floor(Math.random() * (deck.length - i));
         // var randomIndex = Math.floor(Math.random() * (deck.length - i));
 
         //place holder for one of the cards

@@ -122,7 +122,6 @@ var mergeSort = (arr) => {
     return merge(mergeSort(left), mergeSort(right));
 }
 
-
 var merge = (left, right) => {
     var sortedArray = [];
     var leftIdx = 0;
@@ -138,6 +137,7 @@ var merge = (left, right) => {
         } else if (rightIdx === right.length) {
             sortedArray.push(left[leftIdx]);
             leftIdx++;
+
         } else {
             //if still numbers to check in both arrays, find lowest (compare first two using indexes), push it to sortedArray, increment index
             left[leftIdx] < right[rightIdx] ?
@@ -145,11 +145,9 @@ var merge = (left, right) => {
                 (sortedArray.push(right[rightIdx]), rightIdx++);
         }
     }
-
     //if one array is empty, get all nums from other one (instead of if and else if)
     // var remaining = leftIdx === left.length ? right.slice(rightIdx) : left.slice(leftIdx);
     // return sortedArray.concat(remaining)
-
     return sortedArray;
 
 }

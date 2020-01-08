@@ -41,6 +41,7 @@ var bubbleSort = (arr) => {
     var swapped;
 
     for (var i = 0; i < arr.length; i++) {
+
         var currentNum = arr[i];
         var currentNumIdx = i;
 
@@ -49,6 +50,7 @@ var bubbleSort = (arr) => {
 
         if (currentNum > nextNum) {
             var temp = currentNum;
+
             arr[currentNumIdx] = nextNum;
             arr[nextNumIdx] = temp;
             swapped = true;
@@ -92,6 +94,7 @@ var bubbleSort = (arr) => {
 var bubbleSort = (arr) => {
     do {
         var swapped = false;
+        
         arr.forEach((currentNum, i) => {
             if (currentNum > arr[i + 1]) {
                 arr[i] = arr[i + 1];
