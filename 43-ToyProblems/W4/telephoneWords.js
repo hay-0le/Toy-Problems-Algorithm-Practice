@@ -40,17 +40,14 @@
     9: 'WXYZ'
   };
   
-  
   var telephoneWords = (digitString) => {
     var results = [];
-    var limit = 4;
 
     //create strings for each of group of letters from corresponding digit
     var firstLetters = phoneDigitsToLetters[digitString[0]];
     var secondLetters = phoneDigitsToLetters[digitString[1]];
     var thirdLetters = phoneDigitsToLetters[digitString[2]];
     var fourthLetters = phoneDigitsToLetters[digitString[3]];
-    
 
     //recursion function
     var spell = (currentWord = '') => {

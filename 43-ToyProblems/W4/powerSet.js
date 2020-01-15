@@ -17,4 +17,39 @@
  * -> ["", "j", "ju", "jm", "jp", "jmu", "jmp", "jpu", "jmpu", "u", "m", "p", "mu", "mp", "pu", "mpu"]
  */
 
-var powerSet = function(str) {}
+var powerSet = (str) => {
+    //create variable results to hold all possible combos, add empty str
+    var results = [];
+
+    //edge case empty input str
+    if (str.length < 1) return results;
+
+    //remove duplicates 
+    str = str.split("").filter((letter, i) => str.indexOf(letter) === i)
+
+    //recursion function with currentStr = '' and index = 0 as parameters
+    var spell = (currentStr = '', index = 0) => {
+
+        //basecase --> if currentString is same length as str
+        if (currentStr.length === str.length) {
+            //return;
+            return;
+        }
+            
+        //loop through each letter in str starting at index from parameter
+        for (var i = index; i < str.length; i++) {
+            if (results.length === 0) results.push('');
+            //add currentString + current letter to results
+            results.push(currentStr + str[i]);
+            //invoke spell with currentStr + current letter and increment i (to keep from adding same letter twice)
+            spell(currentStr + str[i], i + 1)
+        }
+    }    
+        
+    spell();    
+    return results;
+}
+
+console.log(powerSet('jumjp'))
+
+
