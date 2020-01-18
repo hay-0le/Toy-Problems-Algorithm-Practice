@@ -36,11 +36,9 @@ var Tree = function(value) {
   };
   
   Tree.prototype.DFSelect = function(filter, results = [], depth = 0) {
-      //variable to hold results
-        // var results = [];
-      //if filter returns true for this
+    
+      //if filter returns true with value and depth add to results
       if (filter(this.value, depth)) {
-          //add to results variable
           results.push(this.value)
       }
 
@@ -49,8 +47,6 @@ var Tree = function(value) {
           //call DFSelect on each child
           child.DFSelect(filter, results, depth + 1)
       }
-
-
 
       //return results
       return results;
