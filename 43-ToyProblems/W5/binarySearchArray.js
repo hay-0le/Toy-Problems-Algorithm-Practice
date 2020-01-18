@@ -11,24 +11,25 @@
  */
 
 var binarySearch = function (array, target, start = 0, end = array.length - 1) {
-
+    //check if start is end, also if target is outside the sorted array
     if (start === end || target < array[start] || target > array[end]) {
         return null;
     }
+
     //find middle index of array
     var middle = Math.floor((start + end) / 2);
     
     //if array at middle is equal to target
     if (array[middle] === target) {
-        //return middle
         return middle;
-        //else if target is smaller than array at middle
+
+    //else if target is smaller than array at middle
     } else if (array[middle] > target) {
-        //binary search with left side of array and target
+        //binary search left side of array and target
         return binarySearch(array, target, 0, middle - 1);
-        //else 
+       
     } else {
-        //binary search with right side of array and target
+        //binary searchright side of array and target
         return binarySearch(array, target, middle + 1, end)
     }
 
