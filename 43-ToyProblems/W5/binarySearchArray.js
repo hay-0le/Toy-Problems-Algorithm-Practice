@@ -12,8 +12,12 @@
 
 var binarySearch = function (array, target, start = 0, end = array.length - 1) {
     //check if start is end, also if target is outside the sorted array
-    if (start === end || target < array[start] || target > array[end]) {
+    if (target < array[start] || target > array[end]) {
         return null;
+    }
+
+    if (start === end) {
+        return array[start] === target ? start : null;
     }
 
     //find middle index of array
@@ -26,13 +30,13 @@ var binarySearch = function (array, target, start = 0, end = array.length - 1) {
     //else if target is smaller than array at middle
     } else if (array[middle] > target) {
         //binary search left side of array and target
-        return binarySearch(array, target, 0, middle - 1);
+        return binarySearch(array, target, start, middle - 1);
        
     } else {
         //binary searchright side of array and target
         return binarySearch(array, target, middle + 1, end)
     }
-
 };
 
-console.log(binarySearch([1, 2, 3, 4, 5], 1))
+console.log(binarySearch([1, 2, 3, 4, 5], 3))
+
