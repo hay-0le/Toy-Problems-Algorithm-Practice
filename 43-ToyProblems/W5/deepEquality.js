@@ -27,7 +27,6 @@
     //If they have same about of keys and one is zero, two empty objects will be equal
     if (Object.keys(apple).length === 0) return true;
 
-
     //loop through each key in apple
     for (var key in apple) {
         // if orange does not have that key or if the keys are not the same return false
@@ -40,8 +39,9 @@
 };
 
 
-// var deepEquals = (apple, orange) => {
-//     return JSON.stringify(apple) === JSON.stringify(orange);
-// }
+var deepEquals = (apple, orange) => {
+    return JSON.stringify(apple) === JSON.stringify(orange);
+}
 // console.log(deepEquals({a:1, b: {c:3}},{a:1, b: {c:3}})); // true
 console.log(deepEquals({a:1, b: {c:5}},{a:1, b: {c:6}})); // false
+
