@@ -37,8 +37,24 @@ var Tree = function(value) {
   
   
   
-  Tree.prototype.BFSelect = function(filter) {
+  Tree.prototype.BFSelect = function(filter, results= []; queue = [] depth = 0) {
     // return an array of values for which the function filter(value, depth) returns true
+    //add node to quene
+    queue.push(this);
+
+    while (queue.length) {
+      if (filter(queue[0].value, depth)) {
+        results.push(this.value)
+      }
+
+      for (var child of this.children) {
+        return child.BFSelect(filter, results, queue, depth + 1)
+      }
+    }
+
+    return results;
+
+    
   };
   
   /**
