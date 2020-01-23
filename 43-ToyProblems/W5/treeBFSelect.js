@@ -48,7 +48,7 @@ var Tree = function(value) {
       }
 
       for (var child of this.children) {
-        return child.BFSelect(filter, results, queue, depth + 1)
+        queue.push(child)
       }
     }
 
