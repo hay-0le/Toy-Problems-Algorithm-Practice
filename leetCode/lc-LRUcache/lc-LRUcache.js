@@ -1,187 +1,194 @@
-/**
- * @param {number} capacity
- */
-var LRUCache = function(capacity) {
-    this._cache = {};
+var LRUCache = function (limit) {
+  // A map of key -> LRUCacheItem
+  this._items = {};
 
-    this._capacity = capacity;
-    this._size = 0;
+  // A list of LRUCacheItem.node
+  this._ordering = new List();
 
-    this._newest = null;
-    this._oldest = null;
-};
-
-var Node = function (val, next = null, prev = null) {
-    this.value = val;
-    this.prev = prev;
-    this.next = next;
-}
-/** 
- * @param {number} key
- * @return {number}
- */
-LRUCache.prototype.get = function(key) {
-    if (!this._cache[key]) return -1;
-
-    //if key is already most recently called
-    if (key === this._newest) {
-        return this._cache[key].value;
-    
-    //if key is the tail
-    } else if (key === this._oldest) {
-        //temp for old tail/new head
-        var oldTail = this._oldest;
-        var newTail = this._cache[this._oldest].prev;
-
-        var oldHead = this._newest;
-        var newHead = oldTail;
-
-        console.log("old tail", oldTail)
-        console.log('newTail', newTail);
-        console.log('oldHead', oldHead)
-
-        this._cache[oldHead].prev = newHead;
-        if (this._cache[oldHead].next === newHead ) {
-            this._cache[oldHead].next === null;
-        }
-
-        this._cache[newTail].next = null;
-        if (this._cache[newTail].prev === null) {
-            this._cache[newTail].prev = newHead;
-        }
-
-        this._cache[newHead].prev = null;
-        this._cache[newHead].next = oldHead;
-
-        this._oldest = newTail;
-        this._newest = newHead;
-
-    //if key is
-    } else {
-        var selectedNode = this._cache[key];
-
-console.log("SELECTED NODE", selectedNode);
-        var previousNode = selectedNode.prev;
-        var nextNode = selectedNode.next;
-
-        if (!nextNode) {
-            this._cache[key].prev.next = null;
-            this.__oldest = this._cache[key].prev;
-        } else {
-
-            
-            previousNode.next = nextNode;
-            nextNode.prev = previousNode;
-            
-            //set oldhead previous to selectedNode
-            this._cache[this._newest].prev = key;
-        }
-
-        this._head = key;
-    }
-    // console.log("cache getting", this._cache[1], this._cache[2])
-    return this._cache[key].value;
-};
-
-/** 
- * @param {number} key 
- * @param {number} value
- * @return {void}
- */
-LRUCache.prototype.put = function(key, value) {
-    var newNode = new Node(value);
-    // console.log(this._cache)
-    
-    //if cache empty
-    if (!this._newest) {
-        //   console.log("starting cache")
-        this._newest = key;
-        this._oldest = key;
-        
-        this._cache[key] = newNode;
-        this._size++;
-        console.log("beginning of cache", newNode)
-        return;
-    }
-    
-    //if key yah
-    if (this._cache[key]) {
-        // console.log("already exists")
-        this._cache[key].value = value;
-        // console.log(this._cache)
-        this.get(key);
-        // console.log(this._cache[key])
-        return "updated"
-        
-    } else {        
-        //check if over capacity
-        if (this._size === this._capacity) {
-            console.log('deleting from cache')
-            var newTail = this._cache[this._oldest].prev;
-            delete this._cache[this._oldest];
-            this._oldest = newTail;
-            // console.log("new", newTail)
-            
-            console.log("cache after deleting", this._cache[1], this._cache[2])
-            this._size--;
-        }
-
-        // console.log("adding to cache")
-        //if nah
-        newNode.next = this._newest;
-
-        //add to cache
-        this._cache[key] = newNode;
-        
-        //add new head to old head previous
-        if (!this._cache[this._newest].prev) {
-            this._newest = key;
-            this._oldest = key;
-        
-            this._cache[key] = newNode;
-            this._size++;
-            console.log("beginning of cache", newNode)
-            return;
-        } else {
-            this._cache[this._newest].prev = key;
-        }
-
-        //change head
-        this._newest = key;
-        // console.log("newest after", this._newest)
-
-        this._size++;
-        console.log("cache after adding", this._cache[1], this._cache[2])
-
-    }
-
+  this._limit = limit || 10000;
+  this._size = 0;
 
 };
 
-/** 
- * Your LRUCache object will be instantiated and called as such:
- * var obj = new LRUCache(capacity)
- * var param_1 = obj.get(key)
- * obj.put(key,value)
- */
-// var cache = new LRUCache(2)
-// cache.put(1, 1);
-// cache.put(2, 2);
-// cache.get(1);       // returns 1
-// cache.put(3, 3);    // evicts key 2
-// cache.get(2);       // returns -1 (not found)
-// cache.put(4, 4);    // evicts key 1
-// cache.get(1);       // returns -1 (not found)
-// cache.get(3);       // returns 3
-// console.log(cache.get(4));       // returns 4
- 
-var cache = new LRUCache(2); // limit of 3 items
-cache.put(1, 1)
-cache.put(2, 2);
-cache.get(1) //=> 2
-cache.put(3, 3);
-// console.log(cache.put("item4", 4))
-console.log(cache.get(2));
-// console.log(cache.get("item3")) //=> 3)
-// // item1 was removed because it was the oldest item by insertion/usage
-// cache.get("item1") //=> nul
+var LRUCacheItem = function (val, key) {
+
+  this.val = val === undefined ? null : val;
+  this.key = key === undefined ? null : key;
+  this.node = null;
+
+};
+
+LRUCache.prototype.size = function () {
+
+  return this._size;
+
+};
+
+LRUCache.prototype.get = function (key) {
+
+  if (!(key in this._items)) { return null; }
+
+  var item = this._items[key];
+  this.promote(item);
+  return item.val;
+};
+
+LRUCache.prototype.set = function (key, val) {
+  var item;
+  // Set an existing item
+  if (key in this._items) {
+    item = this._items[key];
+    item.val = val;
+    this.promote(item);
+
+  // Set a new item
+  } else {
+    // Make space if necessary
+    if (this.full()) { this.prune(); }
+    this._size += 1;
+
+    item = new LRUCacheItem(val, key);
+    item.node = this._ordering.unshift(item);
+    this._items[key] = item;
+  }
+  console.log("cached!")
+
+};
+
+
+LRUCache.prototype.full = function () {
+  return this._size >= this._limit;
+};
+
+LRUCache.prototype.prune = function () {
+  var oldest = this._ordering.pop();
+  delete this._items[oldest.key];
+  this._size = Math.max(0, this._size - 1);
+};
+
+LRUCache.prototype.promote = function (item) {
+  this._ordering.moveToFront(item.node);
+};
+
+var List = function () {
+  this.head = null;
+  this.tail = null;
+};
+
+var ListNode = function (prev, val, next) {
+  this.prev = prev || null;
+  this.val = val;
+  this.next = next || null;
+};
+
+// Insert at the head of the list.
+List.prototype.unshift = function (val) {
+  // Empty list
+  if (this.head === null && this.tail === null) {
+    this.head = this.tail = new ListNode(null, val, null);
+  // Not empty list.
+  } else {
+    this.head = new ListNode(null, val, this.head);
+    this.head.next.prev = this.head;
+  }
+  return this.head;
+};
+
+// Delete at the head of the list.
+List.prototype.shift = function () {
+  // Empty list
+  if (this.head === null && this.tail === null) {
+    return null;
+  // Not empty list.
+  } else {
+    var head = this.head;
+    this.head = this.head.next;
+    head.delete();
+    return head.val;
+  }
+};
+
+// Insert at the end of the list.
+List.prototype.push = function (val) {
+  // Empty list
+  if (this.head === null && this.tail === null) {
+    this.head = this.tail = new ListNode(null, val, null);
+  // Not empty list.
+  } else {
+    this.tail = new ListNode(this.tail, val, null);
+    this.tail.prev.next = this.tail;
+  }
+
+  return this.tail;
+};
+
+// Delete at the end of the list.
+List.prototype.pop = function () {
+  // Empty list
+  if (this.head === null && this.tail === null) {
+    return null;
+  // Not empty list.
+  } else {
+    var tail = this.tail;
+    this.tail = this.tail.prev;
+    tail.delete();
+    return tail.val;
+  }
+};
+
+// Move a node to the front of the List
+List.prototype.moveToFront = function (node) {
+  if (node === this.tail) {
+    this.pop();
+  } else if (node === this.head) {
+    return;
+  } else {
+    node.delete();
+  }
+
+  node.prev = node.next = null;
+
+  // Don't delegate to shift, since we want to keep the same
+  // object.
+
+  // Empty list
+  if (this.head === null && this.tail === null) {
+    this.head = this.tail = node;
+  // At least one node.
+  } else {
+    this.head.prev = node;
+    node.next = this.head;
+    this.head = node;
+  }
+};
+
+// Move a node to the end of the List
+List.prototype.moveToEnd = function (node) {
+  if (node === this.head) {
+    this.shift();
+  } else if (node === this.tail) {
+    return;
+  } else {
+    node.delete();
+  }
+
+  // Don't delegate to push, since we want to keep the same
+  // object.
+
+  node.prev = node.next = null;
+
+  // Empty list
+  if (this.head === null && this.tail === null) {
+    this.head = this.tail = node;
+  // At least one node.
+  } else {
+    this.tail.next = node;
+    node.prev = this.tail;
+    this.tail = node;
+  }
+};
+
+ListNode.prototype.delete = function () {
+  if (this.prev) { this.prev.next = this.next; }
+  if (this.next) { this.next.prev = this.prev; }
+};
