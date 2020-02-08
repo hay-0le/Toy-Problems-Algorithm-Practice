@@ -40,15 +40,58 @@
 
 
 var Range = function(start, end, step) {
+    this._size = 0;
+    this._storage = {};
+
+    step = step || 1;
+    let tempStart = start;
+
+    //if no end input
+    if (!end) {
+        //add start to storage, set size to 1
+        this._storage[start] = true;
+        this._size = 1;
+ 
+    } else {
+        //if end is smaller than start, set step to negative
+        if (end < start) {
+            step = 0 - step;
+        }
+        
+        //while loop from start to end
+        while (start >= Math.min(tempStart, end) && start <= Math.max(tempStart, end)) {
+            //add current to object, with key set to true
+            this._storage[start] = true;
+            //increment size
+            this._size++
+            //add step to current
+            start += step;
+        }
+        
+    }
+    
 };
 
 Range.prototype.size = function () {
+    return this._size;
 };
 
 Range.prototype.each = function (callback) {
+    let keys = Object.keys(this._storage);
+    //loop through keys
+    for (let key of keys) {
+        //pass key (not the value) through callback
+        callback(key);
+    }
 };
 
 Range.prototype.includes = function (val) {
+    return this._storage[val] || false;
 };
 
-var range = new Range(1);
+
+
+var range = new Range(9, 1, 1);
+console.log(range.each((num) => {
+    console.log(num)
+}))
