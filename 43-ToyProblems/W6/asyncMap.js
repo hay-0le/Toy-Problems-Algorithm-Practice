@@ -1,4 +1,4 @@
-use strict';
+
 
 /* Implement the function asyncMap:
  *
@@ -38,16 +38,40 @@ use strict';
  */
 
 
-var asyncMap = function(tasks, callback) {
-    var results = [];
-
-    for (task of tasks) {
-        results.push(task())
-    }
-
-    callback(results);
-
+var asyncMap = function (tasks, callback){
+  var resultsCount = 0;
+  var resultsArray = [];
+  
+  //creating an array looping through each task
+    //ivoking each task and saving the result to resultsArray
+  tasks.forEach(function(task, i) {
+    task(function(arg) {
+      resultsArray[i] = arg;
+      resultsCount += 1;
+      if (resultsCount === tasks.length) {
+        callback(resultsArray);
+      }
+    });
+  });
 };
+
+
+var asyncMap = (tasks, callback) => {
+  //build array turning each task into a promise
+  var arrayOfPromises = tasks.map((task) => {
+    return new Promise(task);
+  });
+  
+  //Promise.all returns array of all results from the promise
+  return Promise.all(arrayOfPromises)
+    .then((values) => {
+      callback(values);
+  })
+}
+
+
+
+
 
 asyncMap([
   function(cb){
@@ -65,5 +89,5 @@ asyncMap([
   function(results){
     // the results array will equal ['one','two'] even though
     // the second function had a shorter timeout.
-    console.log(results); // ['one', 'two']
+    console.log("results", results); // ['one', 'two']
  });
