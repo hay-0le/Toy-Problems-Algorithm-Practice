@@ -69,6 +69,7 @@
 
 function BinaryHeap () {
     this._heap = [];
+    this._size = 0;
     // this compare function will result in a minHeap, use it to make comparisons between nodes in your solution
     this._compare = function (i, j) { return i < j };
   }
@@ -80,8 +81,96 @@ function BinaryHeap () {
   
   BinaryHeap.prototype.insert = function (value) {
     // TODO: Your code here
+    //add value to end of the array
+    this._size++;
+    this._heap.push(value);
+
+    //set variable swapped to true
+    let swapped = true;
+    //set variable childIdx to last index in array
+    let childIdx = this._heap.length - 1;
+
+    //while swapped is true
+    while (swapped) {
+      //set variable parentIdx to parents index in heap
+      let parentIdx = Math.floor( (childIdx - 1) / 2 )
+      //set variable tempParent to parent
+      let tempParent = this._heap[parentIdx];
+      //set variable tempChild to child
+      let tempChild = this._heap[childIdx];
+      //check if new value(child) is smaller than its parent
+      if (tempChild < tempParent && parentIdx >= 0 ) {
+        //assign new value to parentidx in heap
+        this._heap[parentIdx] = tempChild;
+        //assign parent to child index in the heap
+        this._heap[childIdx] = tempParent;
+        //assign childIdx to parentIdx
+        childIdx = parentIdx;        
+      
+      //else (not smaller than parent)
+      } else {
+        //assign swapped to false
+        let swapped = false;
+      }
+
+      return this._heap;
   }
+}
   
   BinaryHeap.prototype.removeRoot = function () {
     // TODO: Your code here
+    this._size--;
+
+    //swap first and last nodes
+    let tempRoot = this._heap[0];
+    this._heap[0] = this._heap[this._size];
+    this._heap[this._size] = tempRoot;
+    //remove last nodes
+    this._heap.pop();
+
+    //set variable swapped to true
+
+    //set recursive function checkHeap with parent node idx and heat as parameters
+    let checkHeap = (parentIdx = 0) => {
+      //set variable children
+      let children = [parentIdx * 2 + 1, parentIdx * 2 + 2];
+      let parent = this._heap[parentIdx];
+
+      //function to swap parent and child
+      let swap = (child) => {
+         //set childIdx
+         let childIdx = this._heap.indexOf(child);
+         //set childTemp to child
+         let tempChild = this._heap[childIdx];
+         //assign parent to childIdx in array
+         this._heap[childIdx] = parent;
+         //set childTemp to parentIdx in array
+         this._heap[parentIdx] = child;
+         //reuturn call chechHeap with child idx and current node
+         return checkHeap(childIdx);
+      }
+
+
+      //if either child is smaller, swap with parent
+      if (children[0] < parent) {
+       swap(children[0]);
+
+      } else if (children[1] < parent) {
+        swap(chilren[1])
+
+      } else {
+        return;
+      }    
+    }
+    checkHeap();
+    return this._heap;
   }
+
+let heap = new BinaryHeap();
+
+heap.insert(3);
+console.log(heap.insert(2))
+console.log(heap.insert(1))
+console.log(heap.insert(5))
+console.log(heap.removeRoot())
+console.log(heap.removeRoot())
