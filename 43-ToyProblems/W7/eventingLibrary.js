@@ -22,5 +22,41 @@
 
 var mixEvents = function(obj) {
     // TODO: Your code here
+    
+    let eventsStorage = {};
+    
+    
+    obj.on = (eventName, callback) => {
+      //if event doesn't exists, add it to obj with empty array
+      if (!eventsStorage[eventName]) {
+        eventsStorage[eventName] = []
+      }
+      //add callback to the eventName value array
+      eventsStorage[eventName].push(callback);
+    }
+
+    
+    obj.trigger = (triggeredEvent, ...args) => {
+      let events = eventsStorage[triggeredEvent];
+      //ES5 get args with Array.prototype.slice.call(arguments, 1)
+
+      //if the event exists, loop through each event
+      if (events.length) {
+        for (let event of events) {
+          event.apply(obj, args)
+        }
+      }
+    }
+
     return obj;
   };
+
+
+
+var obj = mixEvents({ name: 'Alice', age: 30 });
+obj.on('ageChange', function(){ // On takes an event name and a callback function
+   console.log('Age changed');
+   obj.age++;
+});
+obj.trigger('ageChange'); // This should call our callback! Should log 'age changed'.
+console.log(obj.age)
