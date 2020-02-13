@@ -26,4 +26,27 @@ var DIGIT_VALUES = {
     M: 1000
   };
   
-  var translateRomanNumeral = function(romanNumeral) {}
+  var translateRomanNumeral = function(romanNumeral) {
+    let total = 0;
+    let i = 0;
+
+    while (i < romanNumeral.length) {
+      let currentNumeral = DIGIT_VALUES[romanNumeral[i]];
+      let nextNumeral = DIGIT_VALUES[romanNumeral[i + 1]];
+      if (romanNumeral[i + 1] !== undefined && currentNumeral < nextNumeral) {
+        total += nextNumeral - currentNumeral;
+        i += 2;
+      } else if (romanNumeral[i + 1] !== undefined) {
+        total += currentNumeral + nextNumeral;
+        i += 2;
+      } else {
+        //last number
+        total += currentNumeral;
+        i++;
+      }
+    }
+
+    return total;
+  }
+
+  console.log(translateRomanNumeral('I'))
