@@ -37,7 +37,7 @@ var LRUCache = function (limit) {
   this._limit = limit || 25;
   this._cache = {};
   this._size = 0;
-
+// [ key3, "key1", key2,]
   this._orderList = [];
 };
 
@@ -58,6 +58,7 @@ LRUCache.prototype.promote = function (key) {
   }
   
   let keyIdx = this._orderList.indexOf(key);
+
   if (keyIdx > -1) {
     this._orderList.splice(keyIdx, 1)
     this._orderList.unshift(key);
@@ -76,7 +77,6 @@ LRUCache.prototype.get = function (key) {
 }
 
 LRUCache.prototype.set = function (key, val) {
-  if (this._cache[key] === undefined) return null;
   //check if cache is at limit
   if (this._size >= this._limit) {
       this.delete();

@@ -95,3 +95,14 @@ var range = new Range(9, 1, 1);
 console.log(range.each((num) => {
     console.log(num)
 }))
+
+
+///rangeCLass(1, 10, 2)
+
+{
+    1: true,
+    3: true,
+    5: true,
+    7: true,
+    9: true
+}

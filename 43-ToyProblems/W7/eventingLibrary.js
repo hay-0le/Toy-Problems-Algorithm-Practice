@@ -39,7 +39,7 @@ var mixEvents = function(obj) {
     obj.trigger = (triggeredEvent, ...args) => {
       let events = eventsStorage[triggeredEvent];
       //ES5 get args with Array.prototype.slice.call(arguments, 1)
-
+      
       //if the event exists, loop through each event
       if (events.length) {
         for (let event of events) {
