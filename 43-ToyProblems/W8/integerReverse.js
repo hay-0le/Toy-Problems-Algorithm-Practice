@@ -19,7 +19,7 @@ function reverseInteger(number){
 
     if (number < 10) return number;
 
-    while (number > 10) {
+    while (number > 0) {
       if (number / divisor > 10) {
         divisor *= 10;
       } else {
@@ -37,9 +37,7 @@ function reverseInteger(number){
         i++;
       }
     }
-    //add final digit (single, less than 10) to storage
-    numStorage[i] = number;
-
+    
     //storage object for 235 should look like:
     // { 1: 2, 2: 3, 1: 5}
 
