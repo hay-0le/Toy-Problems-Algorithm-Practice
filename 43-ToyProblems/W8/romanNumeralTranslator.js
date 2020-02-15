@@ -30,17 +30,24 @@ var DIGIT_VALUES = {
     let total = 0;
     let i = 0;
 
+    //loop through roman numerals
     while (i < romanNumeral.length) {
+
+      //since you determine to add of subtract numerals based off whats in front of behind, we check every two together
       let currentNumeral = DIGIT_VALUES[romanNumeral[i]];
       let nextNumeral = DIGIT_VALUES[romanNumeral[i + 1]];
+
+      //if the first of the two is smaller than the second, then we subtract the first from the second then add to total 
       if (romanNumeral[i + 1] !== undefined && currentNumeral < nextNumeral) {
         total += nextNumeral - currentNumeral;
         i += 2;
+
+        //as long as the second numeral in the pair exists then the first has to be larger than the second, so add them then add to total 
       } else if (romanNumeral[i + 1] !== undefined) {
         total += currentNumeral + nextNumeral;
         i += 2;
       } else {
-        //last number
+        //if last numberal
         total += currentNumeral;
         i++;
       }
