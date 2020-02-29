@@ -7,51 +7,68 @@
  * Extra credit: Make your function handle negative numbers.
  */
 
-/* START SOLUTION */
-// Create a convenience function that sorts arrays ascending numerically
-Array.prototype.sortAscending = function() {
-    this.sort(function(a, b) {
+  /////// OPTION 1 ////////
+  // sort
+  //time complexity: O(n log n)
+  var largestProductOfThree = function(array) {
+    array.sort((a, b) => {
       return a - b;
     });
-    return this;
+
+    let end = array.length - 1;
+
+    return array[end] * array[end - 1] * array[end - 2];
+
   };
-  /* END SOLUTION */
-  
 
-  /////// OPTION 1 ////////
-  // var largestProductOfThree = function(array) {
-  //   array.sortAscending();
-  //   let end = array.length - 1;
+// /////// OPTION 2 ////////
+// // Greedy Approach
+// //time complexity O(n)
+//   var largestProductOfThree = (arr) => {
 
-  //   return array[end] * array[end - 1] * array[end - 2];
+//     //set variables for highest, lowest, and high/low product of first two numbers
+//     let highest = Math.max(arr[0], arr[1]);
+//     let lowest  = Math.min(arr[0], arr[1]);
+//     let highestProductOf2 = arr[0] * arr[1];
+//     let lowestProductOf2  = arr[0] * arr[1];
 
-  // };
+//     //set variable for first product of three
+//     let highestProductOf3 = arr[0] * arr[1] * arr[2];
 
-/////// OPTION 2 ////////
-//Recursion
-  var largestProductOfThree = (array) => {
-    let numOfNumbers = 3;
-    let largestProduct;
-    
-    if (array.length < numOfNumbers) return null;
+//     for (let i=2; i<arr.length; i++) {
+//         let current = arr[i];
 
-    let findLargestProduct = (numsLeftToMultiply, currentProduct = undefined, arrayIdx = 0) => {
-      if (numsLeftToMultiply === 0) {
-        // console.log(currentProduct)
-        // largestProduct = currentProduct > largestProduct ? currentProduct : largestProduct;
-        return;
-      }
+//         //update highest product of 3 with biggest number between current highest product of 3, 
+//         //then the products of adding the current number to high/low product of 2
+//         highestProductOf3 = Math.max(
+//             highestProductOf3,
+//             current * highestProductOf2,
+//             current * lowestProductOf2
+//         );
+        
+//         //update highest product of 2
+//         highestProductOf2 = Math.max(
+//             highestProductOf2,
+//             current * highest,
+//             current * lowest
+//         );
+        
+//         //update lowest product of 2
+//         lowestProductOf2 = Math.min(
+//             lowestProductOf2,
+//             current * highest,
+//             current * lowest
+//         );
+        
+//         //update current highest and current lowest
+//         highest = Math.max(highest, current);
+//         lowest = Math.min(lowest, current);
+//     }
 
-      for (let i = arrayIdx; i < array.length; i++) {
-        let num = array[arrayIdx];
-        // console.log("num", num)
-        currentProduct = currentProduct ? currentProduct * num : num; 
-        console.log("currentProduct", currentProduct)
-        findLargestProduct(numsLeftToMultiply - 1, currentProduct, arrayIdx + 1);
-      }
-    }
-    findLargestProduct(numOfNumbers);
-    return largestProduct;
+//     return highestProductOf3;
  
-  };
+//   };
+
+
+
   console.log(largestProductOfThree([2, 1, 3, 7]))
