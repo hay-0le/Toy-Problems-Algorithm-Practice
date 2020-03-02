@@ -43,29 +43,49 @@
  *  - Make your function accept a parameter for the direction of rotation (1 = clockwise, -1 = counterclockwise)
  */
 
-var rotateMatrix = function(matrix, direction) {
-  return matrix[0].map((val, index) => matrix.map(row => row[index]).reverse())
+var rotateMatrix = function(matrix, direction = 1) {
+ 
+    matrix = matrix[0].map((col, index) => matrix.map(row => row[index]).reverse())
 
-  // return direction === -1 ? rotatedMatrix.reverse() : rotatedMatrix;
+    if (direction === - 1) {
+      return matrix.reverse().map((row, i) => row.reverse());
+    }
+    return matrix;
 };
 
-console.log(rotateMatrix([
-  [1,2,3,4],
-  [5,6,7,8],
-  [9,'A','B','C'],
-  ['D','E','F','G']
-  ]))
 
-//   function rotate(matrix) {          // function statement
-//     const N = matrix.length - 1;   // use a constant
-//     // use arrow functions and nested map;
-//     const result = matrix.map((row, i) => 
-//          row.map((val, j) => matrix[N - j][i])
-//     );
-//     matrix.length = 0;       // hold original array reference
-//     matrix.push(...result);  // Spread operator
-//     return matrix;
-// }
+// var rotateMatrix = function(matrix, direction = 1) {
+  
+//   if (direction === 1) {
+//     matrix = matrix.reverse();
+//     console.log("reversed", matrix)
+//   } else { 
+//     // matrix = matrix.map(row => row.reverse())
+//     // console.log("SOmething", matrix)
+//   }
+
+//   return matrix[0].map((col, i) => matrix.map(row => row[i]))
+
+// };
+
+var rotateMatrix = function (matrix, direction = 1) {
+  if (direction === 1) {
+    matrix = matrix.reverse();
+  } else {
+    matrix = matrix.map(row => row.reverse());
+  }
+  
+  console.log("direction", direction, matrix)
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < i; j++) {
+      let temp = matrix[i][j];
+      matrix[i][j] = matrix[j][i];
+      matrix[j][i] = temp;
+    }
+  }
+
+  return matrix;
+}
 
 var matrix = [
   [1,2,3,4],
@@ -77,7 +97,6 @@ var matrix = [
 //  matrix[0][0]; // 1
 //  matrix[3][2]; // 'F'
 
-var rotatedMatrix = rotateMatrix(matrix); // Rotate 90 degrees clockwise
 // rotatedMatrix is:
 //  [ ['D',9,5,1],
 //   ['E','A',6,2],
@@ -86,4 +105,5 @@ var rotatedMatrix = rotateMatrix(matrix); // Rotate 90 degrees clockwise
 //  ]
 //  rotatedMatrix[0][0]; // 'D'
 //  rotatedMatrix[3][2]; // 8
-console.log(rotatedMatrix)
+console.log("Clockwise", rotateMatrix(matrix, 1))
+console.log("Counterclock wise", rotateMatrix(matrix, -1))
