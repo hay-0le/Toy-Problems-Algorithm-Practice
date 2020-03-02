@@ -70,16 +70,17 @@ var Tree = function() {
   Tree.prototype.getAncestorPath = function(child, path = []) {
 
 
-    //add current to path
+    //add current to path if child is descendant of is the child
     if (this.isDescendant(child) || this === child) {
-      console.log(this)
       path.push(this);
     } else {
       return;
     }
     
+    //if not more children, return path
     if (this.children.length < 1) return path;
 
+    //recurse through children
     for (let descendant of this.children) {
       return descendant.getAncestorPath(child, path);
     }
@@ -130,3 +131,35 @@ var Tree = function() {
   var path = grandma.getAncestorPath(me);
 
 console.log(path); // => [grandma, mom, me]
+
+
+
+
+
+
+var inputs = [
+  .0...
+  .00..
+  ....0
+
+
+  ..000.
+  ..000.
+  ..000.
+  0....
+  ..000.
+
+
+
+
+  ..000.
+  ..0...\n..0.0.\n..0...\n..000.',
+  '0....0\n......\n..00..\n......\n0....0',
+  '00...0\n0...00\n......\n0.0.0.\n0.....',
+  '0...0\n0...0\n00000',
+  '0...0\n..0..\n0...0',
+  '.',
+  '0',
+  '...\n..0\n.00',
+  '.....\n..0..\n.000.\n..0..\n.....',
+  '00..
