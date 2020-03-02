@@ -28,6 +28,8 @@ var makeBoard = function(n) {
     return board;
   };
   
+/////////// OPTION 1 ///////////
+// 7 ---> 270440.460ms (4.5min)
 var robotPaths = function(n, board, i = 0, j = 0) {
   let numOfPaths = 0;
   board = board || makeBoard(n);
@@ -47,7 +49,6 @@ var robotPaths = function(n, board, i = 0, j = 0) {
       return;
     
     }
-    
     
     //check right -- if still on board, and has not been visited
     if (y + 1 < n && !board.hasBeenVisited(x, y + 1)) {
@@ -88,26 +89,30 @@ var robotPaths = function(n, board, i = 0, j = 0) {
 
 
 /////////// OPTION 2 ////////////
-// var robotPaths = function(n, board, i = 0, j = 0) {
-//   board = board || makeBoard(n);
+// 7 ---> 539107.996ms (8.98 min)
+var robotPaths = function(n, board, i = 0, j = 0) {
+  board = board || makeBoard(n);
  
-//   // No possible paths if you’re off the board
-//   // or on a piece you shouldn’t be on
-//   if (!(i >= 0 && i < n && j >= 0 && j < n) ||
-//       board.hasBeenVisited(i, j)) {
-//     return 0;
-//   }
-//   // One possible path if you’re at the
-//   // end point (the path that led there)
-//   if (i === n - 1 && j === n - 1) return 1;
-//   board.togglePiece(i, j);
+  // No possible paths if you’re off the board
+  // or on a piece you shouldn’t be on
+  if (!(i >= 0 && i < n && j >= 0 && j < n) ||
+      board.hasBeenVisited(i, j)) {
+    return 0;
+  }
+  // One possible path if you’re at the
+  // end point (the path that led there)
+  if (i === n - 1 && j === n - 1) return 1;
+  board.togglePiece(i, j);
 
-//   //add number of paths to destination for moving piece up + down + left + right
-//   var result = robotPaths(n, board, i + 1, j) +  robotPaths(n, board, i - 1, j) + robotPaths(n, board, i, j - 1) + robotPaths(n, board, i, j + 1) ;
+  //add number of paths to destination for moving piece up + down + left + right
+  var result = robotPaths(n, board, i + 1, j) +  robotPaths(n, board, i - 1, j) + robotPaths(n, board, i, j - 1) + robotPaths(n, board, i, j + 1) ;
  
-//   board.togglePiece(i, j);
-//   return result;
+  board.togglePiece(i, j);
+  return result;
 
-// };
+};
 
-console.log(robotPaths(4))
+
+console.time("RobotPaths");
+console.log(robotPaths(7));
+console.timeEnd("RobotPaths");
