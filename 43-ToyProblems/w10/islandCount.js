@@ -13,7 +13,7 @@ function countIslands(mapStr) {
     //switch coordinate to water
     islandMap[r][c] = '.';
 
-    //check surrounding for land
+    //check all surrounding spots for land
 
     //check above
     if (islandMap[r - 1] && islandMap[r - 1] === '0') {
