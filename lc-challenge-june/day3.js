@@ -32,39 +32,41 @@
  //ouput: number -- min total to get all the people evenly to each city at lowest cost
  //
 
-// var twoCitySchedCost = function(costs) {
-//     let minCosts = null;
+
+//time complexity: garbage shit
+var twoCitySchedCost = function(costs) {
+    let minCosts = null;
     
-//     let flyPeople = (numToCityA = 0, numToCityB = 0, currentTotal = 0, index = 0) => {
-//         //either city exceeds capacity
-//         if (numToCityA > costs.length / 2 || numToCityB > costs.length / 2) {
-//             return;
-//         }
+    let flyPeople = (numToCityA = 0, numToCityB = 0, currentTotal = 0, index = 0) => {
+        //either city exceeds capacity
+        if (numToCityA > costs.length / 2 || numToCityB > costs.length / 2) {
+            return;
+        }
 
-//         //currentTotal goes over minCosts
-//         if (minCosts !== null && currentTotal >= minCosts) {
-//             return;
-//         }
+        //currentTotal goes over minCosts
+        if (minCosts !== null && currentTotal >= minCosts) {
+            return;
+        }
 
-//         //once everyone has been sorted
-//         if (costs[index] === undefined) {
-//             //check if currentTotal is less than minCosts --> update
-//             if (currentTotal < minCosts || minCosts === null) {
-//                 minCosts = currentTotal;
-//             } 
-//             return;
-//         }
+        //once everyone has been sorted
+        if (costs[index] === undefined) {
+            //check if currentTotal is less than minCosts --> update
+            if (currentTotal < minCosts || minCosts === null) {
+                minCosts = currentTotal;
+            } 
+            return;
+        }
 
-//         // for each person
-//         //fly to cityA
-//         flyPeople(numToCityA + 1, numToCityB, currentTotal + costs[index][0], index + 1);
-//         //fly to cityB
-//         flyPeople(numToCityA, numToCityB + 1, currentTotal + costs[index][1], index + 1);
-//     }
+        // for each person
+        //fly to cityA
+        flyPeople(numToCityA + 1, numToCityB, currentTotal + costs[index][0], index + 1);
+        //fly to cityB
+        flyPeople(numToCityA, numToCityB + 1, currentTotal + costs[index][1], index + 1);
+    }
 
-//     flyPeople();
-//     return minCosts;
-// };
+    flyPeople();
+    return minCosts;
+};
 
 
 
@@ -101,20 +103,22 @@ var twoCitySchedCost = function(costs) {
 
 
 
-// var twoCitySchedCost = function(costs) {
 
-//     costs.sort((a, b) => {
-//         return (a[0] - a[1]) - (b[0] - b[1])
-//     })
 
-//     total = 0;
+var twoCitySchedCost = function(costs) {
 
-//     for (let i = 0; i < costs.length/2;i++) {
-//         total += costs[i][0] + costs[costs.length/2 + i][1];
-//     }
+    costs.sort((a, b) => {
+        return (a[0] - a[1]) - (b[0] - b[1])
+    })
 
-//     return total;
-// }
+    total = 0;
+
+    for (let i = 0; i < costs.length/2;i++) {
+        total += costs[i][0] + costs[costs.length/2 + i][1];
+    }
+
+    return total;
+}
 
 
 
